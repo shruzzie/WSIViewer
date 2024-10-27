@@ -1,6 +1,6 @@
-
 "use client";
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { ZoomIn, ZoomOut, Move, Download, Share2, Printer, RotateCcw, Settings, Search } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -38,11 +38,6 @@ const WSIViewer = () => {
 
   const handleMouseUp = () => {
     setIsDragging(false);
-  };
-
-  const handleReset = () => {
-    setScale(1);
-    setPosition({ x: 0, y: 0 });
   };
 
   return (
@@ -162,15 +157,21 @@ const WSIViewer = () => {
               cursor: isDragging ? 'grabbing' : 'grab'
             }}
           >
-            <img
-              src="/wsi.png"
-              alt="Whole Slide Image"
-              className="transform origin-center transition-transform duration-150"
-              style={{
-                transform: `scale(${scale}) translate(${position.x}px, ${position.y}px)`,
-                transformOrigin: '0 0'
-              }}
-            />
+            <div style={{
+              transform: `scale(${scale}) translate(${position.x}px, ${position.y}px)`,
+              transformOrigin: '0 0',
+              position: 'relative',
+              width: '100%',
+              height: '100%'
+            }}>
+              <Image
+                src="/wsi.png"
+                alt="Whole Slide Image"
+                fill
+                style={{ objectFit: 'contain' }}
+                className="transition-transform duration-150"
+              />
+            </div>
           </div>
         </Card>
 
@@ -194,11 +195,13 @@ const WSIViewer = () => {
         <Card className="bg-white/90 backdrop-blur-xl shadow-xl rounded-xl border-0 transition-all duration-300 hover:shadow-lg">
           <CardContent className="p-8">
             <h3 className="text-lg font-semibold text-slate-800 mb-4">Overview</h3>
-            <div className="aspect-square bg-slate-50 rounded-xl overflow-hidden shadow-inner">
-              <img
+            <div className="aspect-square bg-slate-50 rounded-xl overflow-hidden shadow-inner relative">
+              <Image
                 src="/wsi.png"
                 alt="WSI Thumbnail"
-                className="w-full h-full object-cover transition-all duration-300 hover:scale-105"
+                fill
+                style={{ objectFit: 'cover' }}
+                className="transition-all duration-300 hover:scale-105"
               />
             </div>
             <div className="mt-6 space-y-3">
